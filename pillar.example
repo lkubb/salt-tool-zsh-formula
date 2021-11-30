@@ -1,0 +1,8 @@
+tool:
+  zsh:
+    - username: user
+      default: true   # set zsh as default shell for this user
+      xdgconfig: true # this is default. mind that currently, ZDOTDIR will be set globally,
+                      # excluded users will have broken config. possible workaround by creating
+                      # the option to only leave .zshenv in $HOME
+      prezto: true
