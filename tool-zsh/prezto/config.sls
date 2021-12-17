@@ -2,8 +2,8 @@ include:
   - .package
 
 {%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') %}
-  {%- from 'tool/zsh/map.jinja' import user with context %}
-  {%- from 'tool/zsh/prezto/map.jinja' import zdotdir, zpreztodir, extplugins_target with context %}
+  {%- from 'tool-zsh/map.jinja' import user with context %}
+  {%- from 'tool-zsh/prezto/map.jinja' import zdotdir, zpreztodir, extplugins_target with context %}
 Prezto zdotfiles/runcoms are copied for user '{{ user.name }}' if he has no custom file:
   file.copy:
     - names:

@@ -1,5 +1,5 @@
 {%- for user in salt['pillar.get']('tool:zsh', salt['pillar.get']('tool:users', [])) | selectattr('dotconfig') %}
-  {%- from 'tool/zsh/map.jinja' import user, zdotdir with context %}
+  {%- from 'tool-zsh/map.jinja' import user, zdotdir with context %}
 zsh configuration is synced to ZDOTDIR for user '{{ user.name }}':
   file.recurse:
     - name: {{ zdotdir }}

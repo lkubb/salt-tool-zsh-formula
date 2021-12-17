@@ -2,7 +2,7 @@ include:
   - .package
 
 {%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') | selectattr('prezto.extplugins') %}
-  {%- from 'tool/zsh/prezto/map.jinja' import zpreztodir, extplugins_target with context -%}
+  {%- from 'tool-zsh/prezto/map.jinja' import zpreztodir, extplugins_target with context -%}
 
   {%- if user.prezto.get('required_packages', False) %}
 Packages required for prezto modules specified for user '{{ user.name }}' are installed:
@@ -14,7 +14,7 @@ Packages required for prezto modules specified for user '{{ user.name }}' are in
 External zsh plugins are synced on Prezto init for user '{{ user.name }}':
   file.blockreplace:
     - name: {{ zdotdir }}/.zpreztorc
-    - source: salt://tool/zsh/prezto/files/external_plugins.zsh
+    - source: salt://tool-zsh/prezto/files/external_plugins.zsh
     - template: jinja
     - context:
         extplugins: {{ user.prezto['extplugins'] }}

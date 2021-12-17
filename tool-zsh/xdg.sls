@@ -27,7 +27,7 @@ ZSH uses XDG_CONFIG_HOME:     # in case /etc/zsh dir does not exist, use /etc/zs
       - ZSH setup is completed
 
 {%- for user in salt['pillar.get']('tool:zsh', []) | rejectattr('xdg', 'sameas', False) %}
-  {%- from 'tool/zsh/map.jinja' import xdg with context %}
+  {%- from 'tool-zsh/map.jinja' import xdg with context %}
 
 Existing ZSH configuration is migrated for user '{{ user.name }}':
   file.rename:

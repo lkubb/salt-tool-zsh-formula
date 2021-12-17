@@ -1,5 +1,5 @@
 {%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') %}
-  {%- from 'tool/zsh/prezto/map.jinja' import zpreztodir, prezto_branch with context %}
+  {%- from 'tool-zsh/prezto/map.jinja' import zpreztodir, prezto_branch with context %}
 Prezto is updated to latest commit for user '{{ user.name }}':
   cmd.run:
     - name: |
