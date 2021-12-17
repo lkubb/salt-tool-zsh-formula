@@ -1,0 +1,16 @@
+{%- from 'tool/zsh/map.jinja' import zdotdir with context %}
+
+{%- set zpreztodir = zdotdir ~ '/zprezto' if user.xdg else '/.zprezto' -%}
+
+{%- if user.prezto.get('repo') is string -%}
+  {%- set prezto_repo = user.prezto.repo -%}
+  {%- set prezto_branch = '' -%}
+{%- elif user.prezto.get('repo') is mapping -%}
+  {%- set prezto_repo = user.prezto.get('repo', '') -%}
+  {%- set prezto_branch = user.prezto.get('branch', '') -%}
+{%- else -%}
+  {%- set prezto_repo = 'https://github.com/sorin-ionescu/prezto.git' -%}
+  {%- set prezto_branch = '' -%}
+{%- endif -%}
+
+{%- set extplugins_target = user.prezto.get('extplugins_target', zpreztodir ~ '/contrib') -%}

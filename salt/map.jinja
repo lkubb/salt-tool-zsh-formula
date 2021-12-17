@@ -1,0 +1,22 @@
+{%- load_yaml as user_info -%}
+group: {{ salt['user.primary_group'](user.name) }}
+home: {{ salt['user.info'](user.name).home }}
+{%- endload -%}
+
+{%- set user = salt['defaults.merge'](user_info, user, in_place=False) -%}
+
+{#- cannot use environ.get because it only has access to current env, not a specific user's -#}
+{%- load_yaml as xdg -%}
+cache: {{ salt['cmd.run']('[ -n "$XDG_CACHE_HOME" ] && echo "${XDG_CACHE_HOME}" || echo "${HOME}/.cache"', runas=user.name) }}
+config: {{ salt['cmd.run']('[ -n "$XDG_CONFIG_HOME" ] && echo "${XDG_CONFIG_HOME}" || echo "${HOME}/.config"', runas=user.name) }}
+data: {{ salt['cmd.run']('[ -n "$XDG_DATA_HOME" ] && echo "${XDG_DATA_HOME}" || echo "${HOME}/.local/share"', runas=user.name) }}
+state: {{ salt['cmd.run']('[ -n "$XDG_STATE_HOME" ] && echo "${XDG_STATE_HOME}" || echo "${HOME}/.local/state"', runas=user.name) }}
+{%- endload -%}
+
+{%- if user.xdg %}
+  {%- set zdotdir = xdg.config ~ '/zsh' %}
+{%- elif salt['cmd.run']('command -v zsh', runas=user.name) %} {# if zsh was installed before this state was run, zdotdir might have been customized #}
+  {%- set zdotdir = salt['cmd.run']('echo ${ZDOTDIR:-$HOME}', runas=user.name, shell=salt['cmd.run']('command -v zsh', runas=user.name)) %}
+{%- else %}
+  {%- set zdotdir = user.home -%}
+{%- endif %}

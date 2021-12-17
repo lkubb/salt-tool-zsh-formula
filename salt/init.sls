@@ -1,9 +1,14 @@
-tool-zsh-required-packages-installed:
-  pkg.installed:
-    - name: zsh
-
-tool-zsh-setup-completely-finished:
-  test.nop:
-    - name: zsh setup has finished, this state exists for technical reasons
-    - require:
-      - pkg: zsh
+include:
+  - .package
+{%- if salt['pillar.get']('tool:zsh') | rejectattr('xdg', 'sameas', False) %}
+  - .xdg
+{%- endif %}
+{%- if salt['pillar.get']('tool:zsh') | selectattr('default') %}
+  - .default
+{%- endif %}
+{%- if salt['pillar.get']('tool:zsh') | selectattr('dotconfig') %}
+  - .configsync
+{%- endif %}
+{%- if salt['pillar.get']('tool:zsh') | selectattr('prezto') %}
+  - .prezto
+{%- endif %}

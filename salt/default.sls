@@ -1,11 +1,13 @@
 include:
   - ..zsh
 
-{%- for username in salt['pillar.get']('tool:zsh', [{'username': 'user', 'default': True }]) | selectattr('default') | map(attribute='username') %}
-zsh-is-default-shell:
+{%- for username in salt['pillar.get']('tool:zsh', [])) | selectattr('default') | map(attribute='name') %}
+ZSH is default shell for user '{{ username }}':
   cmd.run: # there's user.present with shell option, but I don't want to create one here in case it does not exist
-    - name: chsh -s /bin/zsh
-    - runas: {{ username }}
+    - name: | # running this as root because chsh asks for the user's password interactively if he calls it himself
+        ZSHPATH=$(sudo -u {{ username }} echo $((find /usr/local/bin /opt/homebrew/bin /usr/bin /bin -name zsh 2>/dev/null || which zsh) | head -n 1))
+        [ -z "$ZSHPATH" ] && exit 1
+        chsh -s "$ZSHPATH" "{{ username }}"
     - prereq_in:
-      - tool-zsh-setup-completely-finished
+      - ZSH setup is completed
 {%- endfor %}
