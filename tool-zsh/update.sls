@@ -1,6 +1,8 @@
+{%- from 'tool-zsh/map.jinja' import zsh %}
+
 include:
   - .prezto.update
-{%- if salt['pillar.get']('tool:zsh') | selectattr('dotconfig') %}
+{%- if zsh.users | selectattr('dotconfig') %}
   - .configsync
 {%- endif %}
 

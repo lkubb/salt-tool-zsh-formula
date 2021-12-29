@@ -1,11 +1,12 @@
-{%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') %}
-  {%- from 'tool-zsh/prezto/map.jinja' import zpreztodir, prezto_branch with context %}
+{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
+
+{%- for user in zsh.users | selectattr('zsh.prezto') %}
 Prezto is updated to latest commit for user '{{ user.name }}':
   cmd.run:
     - name: |
-        cd {{ zpreztodir }} {% if prezto_branch%}&& git switch {{ prezto_branch }}{% endif %} \
+        cd {{ user._zprezto.datadir }} {% if user._zprezto.branch%}&& git switch {{ user._zprezto.branch }}{% endif %} \
         && git pull && git submodule update --init --recursive
     - runas: {{ user.name }}
     - onlyif:
-      - test -s {{ zpreztodir }}/init.zsh
+      - test -s {{ user._zprezto.datadir }}/init.zsh
 {%- endfor %}

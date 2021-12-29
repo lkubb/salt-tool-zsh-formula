@@ -1,22 +1,22 @@
+{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
+
 include:
   - .package
 
-{%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') %}
-  {%- from 'tool-zsh/map.jinja' import user with context %}
-  {%- from 'tool-zsh/prezto/map.jinja' import zdotdir, zpreztodir, extplugins_target with context %}
+{%- for user in zsh.users | selectattr('zsh.prezto') %}
 Prezto zdotfiles/runcoms are copied for user '{{ user.name }}' if he has no custom file:
   file.copy:
     - names:
-      - {{ zdotdir }}/.zshenv:
-        - source: {{ zpreztodir }}/runcoms/zshenv
-      - {{ zdotdir }}/.zprofile:
-        - source: {{ zpreztodir }}/runcoms/zprofile
-      - {{ zdotdir }}/.zlogin:
-        - source: {{ zpreztodir }}/runcoms/zlogin
-      - {{ zdotdir }}/.zlogout:
-        - source: {{ zpreztodir }}/runcoms/zlogout
-      - {{ zdotdir }}/.zpreztorc:
-        - source: {{ zpreztodir }}/runcoms/zpreztorc
+      - {{ user._zsh.confdir }}/.zshenv:
+        - source: {{ user._zprezto.datadir }}/runcoms/zshenv
+      - {{ user._zsh.confdir }}/.zprofile:
+        - source: {{ user._zprezto.datadir }}/runcoms/zprofile
+      - {{ user._zsh.confdir }}/.zlogin:
+        - source: {{ user._zprezto.datadir }}/runcoms/zlogin
+      - {{ user._zsh.confdir }}/.zlogout:
+        - source: {{ user._zprezto.datadir }}/runcoms/zlogout
+      - {{ user._zsh.confdir }}/.zpreztorc:
+        - source: {{ user._zprezto.datadir }}/runcoms/zpreztorc
     - user: {{ user.name }}
     - group: {{ user.group }}
     - mode: '0600'
@@ -25,8 +25,8 @@ Prezto zdotfiles/runcoms are copied for user '{{ user.name }}' if he has no cust
 
 Prezto zshrc is copied for user '{{ user.name }}' if he has no custom one (special cased because of salt requisite weirdness):
   file.copy:
-    - name: {{ zdotdir }}/.zshrc
-    - source: {{ zpreztodir }}/runcoms/zshrc
+    - name: {{ user._zsh.confdir }}/.zshrc
+    - source: {{ user._zprezto.datadir }}/runcoms/zshrc
     - user: {{ user.name }}
     - group: {{ user.group }}
     - mode: '0600'
@@ -36,16 +36,16 @@ Prezto zshrc is copied for user '{{ user.name }}' if he has no custom one (speci
 # this only works for default zpreztorc ofc
 Prezto is sourced from the correct directory for user '{{ user.name }}':
   file.replace:
-    - name: {{ zdotdir }}/.zshrc
+    - name: {{ user._zsh.confdir }}/.zshrc
     - pattern: '{{ "${ZDOTDIR:-$HOME}/.zprezto" | regex_escape }}'
-    - repl: '{{ zpreztodir }}'
+    - repl: '{{ user._zprezto.datadir }}'
     - backup: False
     - onchanges:
       - Prezto zshrc is copied for user '{{ user.name }}' if he has no custom one (special cased because of salt requisite weirdness)
 
 Prezto contrib folder exists for user '{{ user.name }}':
   file.directory:
-    - name: {{ zpreztodir }}/contrib
+    - name: {{ user._zprezto.datadir }}/contrib
     - user: {{ user.name }}
     - group: {{ user.group }}
     - require:
@@ -55,7 +55,7 @@ Prezto contrib folder exists for user '{{ user.name }}':
 # this only works for default zpreztorc ofc
 Prezto looks for plugins in additional user-defined paths for user '{{ user.name }}:
   file.replace:
-    - name: {{ zdotdir }}/.zpreztorc
+    - name: {{ user._zsh.confdir }}/.zpreztorc
     - pattern: >-
         {{ "# zstyle ':prezto:load' pmodule-dirs $HOME/.zprezto-contrib" | regex_escape }}
     - repl: "zstyle ':prezto:load' pmodule-dirs{% for d in user.prezto['user_plugin_dirs'] %} {{ d }}{% endfor %}"

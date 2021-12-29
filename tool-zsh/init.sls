@@ -1,14 +1,16 @@
+{%- from 'tool-zsh/map.jinja' import zsh %}
+
 include:
   - .package
-{%- if salt['pillar.get']('tool:zsh') | rejectattr('xdg', 'sameas', False) %}
+{%- if zsh.users | rejectattr('xdg', 'sameas', False) %}
   - .xdg
 {%- endif %}
-{%- if salt['pillar.get']('tool:zsh') | selectattr('default') %}
+{%- if zsh.users | selectattr('zsh.default') %}
   - .default
 {%- endif %}
-{%- if salt['pillar.get']('tool:zsh') | selectattr('dotconfig') %}
+{%- if zsh.users | selectattr('dotconfig') %}
   - .configsync
 {%- endif %}
-{%- if salt['pillar.get']('tool:zsh') | selectattr('prezto') %}
+{%- if zsh.users | selectattr('zsh.prezto') %}
   - .prezto
 {%- endif %}

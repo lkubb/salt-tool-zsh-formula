@@ -1,16 +1,17 @@
-include:
-  - ..package
+{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
 
-{%- for user in salt['pillar.get']('tool:zsh', []) | selectattr('prezto') %}
-  {%- from 'tool-zsh/prezto/map.jinja' import zpreztodir, prezto_repo, prezto_branch with context %}
+include:
+  - .package
+
+{%- for user in zsh.users | selectattr('zsh.prezto') %}
 Prezto is cloned for user '{{ user.name }}':
   # git.cloned: # does not support --recursive -.-
   cmd.run:
     - name: |
-        git clone --recursive {% if prezto_branch %}--branch {{ prezto_branch}} {% endif %}{{ prezto_repo }} {{ zpreztodir }}
+        git clone --recursive {% if user._zprezto.branch %}--branch {{ user._zprezto.branch}} {% endif %}{{ user._zprezto.repo }} {{ user._zprezto.datadir }}
     - runas: {{ user.name }}
     - unless:
-      - test -s {{ zpreztodir }}/init.zsh
+      - test -s {{ user._zprezto.datadir }}/init.zsh
     - require:
       - ZSH setup is completed
 {%- endfor %}
