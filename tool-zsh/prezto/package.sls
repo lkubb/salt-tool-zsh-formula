@@ -1,7 +1,7 @@
 {%- from 'tool-zsh/prezto/map.jinja' import zsh %}
 
 include:
-  - .package
+  - ..package
 
 {%- for user in zsh.users | selectattr('zsh.prezto') %}
 Prezto is cloned for user '{{ user.name }}':
