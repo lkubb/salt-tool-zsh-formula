@@ -85,7 +85,7 @@ tool:
 - `salt://dotconfig/<user>/zsh` or
 - `salt://dotconfig/zsh`
 
-to the specified config dir for every user that has it enabled (see `user.dotconfig`). The target folder will not be cleaned by default (ie files in the target that are absent from the user's dotconfig will stay).
+to the user's `$ZDOTDIR` for every user that has it enabled (see `user.dotconfig`). The target folder will not be cleaned by default (ie files in the target that are absent from the user's dotconfig will stay).
 
 ## General ZSH Notes
 ### Config Files
