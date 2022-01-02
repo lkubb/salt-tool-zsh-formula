@@ -7,7 +7,7 @@ include:
   {%- if user.zsh.prezto.get('required_packages', False) %}
 Packages required for prezto modules specified for user '{{ user.name }}' are installed:
   pkg.installed:
-    - pkgs: {{ user.zsh.prezto.get('required_packages') | json  }}
+    - pkgs: {{ user.zsh.prezto.get('required_packages') | json }}
   {%- endif %}
 
   {%- if user.zsh.prezto.get('extplugins_sync_on_startup', False) %}
@@ -35,7 +35,7 @@ Git does not ignore contrib folder in zpreztodir for user '{{ user.name }}':
 Zsh plugin '{{ plugin }}' is added to prezto as submodule for user '{{ user.name }}':
   cmd.run:
     - name: |
-        cd {{ user._zprezto.datadir }} && git submodule add {{ https://github.com/{{ plugin }}.git }} contrib/{{ plugin_name }} \
+        cd {{ user._zprezto.datadir }} && git submodule add https://github.com/{{ plugin }}.git contrib/{{ plugin_name }} \
         && git submodule update --init --recursive contrib/{{ plugin_name }}
     - runas: {{ user.name }}
     - unless:
