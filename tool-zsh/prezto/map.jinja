@@ -4,11 +4,11 @@
 {%- for user in zsh.users | selectattr('zsh.prezto') -%}
   {%- set zpreztodir = user.xdg.data ~ '/zprezto' if user.xdg else user.home ~ '/.zprezto' %}
   {%- if user.zsh.prezto.repo | default(True) is string -%}
-    {%- set prezto_repo = user.prezto.repo -%}
+    {%- set prezto_repo = user.zsh.prezto.repo -%}
     {%- set prezto_branch = '' -%}
-  {%- elif user.prezto.repo | default(True) is mapping -%}
-    {%- set prezto_repo = user.prezto.get('repo', '') -%}
-    {%- set prezto_branch = user.prezto.get('branch', '') -%}
+  {%- elif user.zsh.prezto.repo | default(True) is mapping -%}
+    {%- set prezto_repo = user.zsh.prezto.get('repo', '') -%}
+    {%- set prezto_branch = user.zsh.prezto.get('branch', '') -%}
   {%- else -%}
     {%- set prezto_repo = 'https://github.com/sorin-ionescu/prezto.git' -%}
     {%- set prezto_branch = '' -%}
@@ -17,6 +17,6 @@
       'datadir': zpreztodir,
       'repo': prezto_repo,
       'branch': prezto_branch,
-      'extplugins_target': user.prezto.extplugins_target | default(zpreztodir ~ '/contrib')}
+      'extplugins_target': user.zsh.prezto.extplugins_target | default(zpreztodir ~ '/contrib')}
   }) -%}
 {%- endfor -%}

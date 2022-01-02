@@ -4,7 +4,7 @@
 Prezto is updated to latest commit for user '{{ user.name }}':
   cmd.run:
     - name: |
-        cd {{ user._zprezto.datadir }} {% if user._zprezto.branch%}&& git switch {{ user._zprezto.branch }}{% endif %} \
+        cd {{ user._zprezto.datadir }} {% if user._zprezto.branch %}&& git switch {{ user._zprezto.branch }}{% endif %} \
         && git pull && git submodule update --init --recursive
     - runas: {{ user.name }}
     - onlyif:
