@@ -51,7 +51,7 @@ Prezto contrib folder exists for user '{{ user.name }}':
     - require:
       - Prezto is cloned for user '{{ user.name }}'
 
-  {%- if user.prezto.get('user_plugin_dirs', []) %}
+  {%- if user.zsh.prezto.get('user_plugin_dirs', []) %}
 # this only works for default zpreztorc ofc
 Prezto looks for plugins in additional user-defined paths for user '{{ user.name }}:
   file.replace:

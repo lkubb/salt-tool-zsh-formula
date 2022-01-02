@@ -44,7 +44,7 @@ Zsh plugin '{{ plugin }}' is added to prezto as submodule for user '{{ user.name
     {%- endfor %}
 
   {%- else %}
-    {%- for plugin in user.prezto.get('extplugins', []) %}
+    {%- for plugin in user.zsh.prezto.get('extplugins', []) %}
       {%- set plugin_name = plugin.split('/') | last %}
 Zsh plugin '{{ plugin }}' is cloned to zpreztodir for user '{{ user.name }}':
   # git.cloned: # does not support --recursive -.- prezto modules might have a submodule.
