@@ -1,5 +1,7 @@
 {%- from 'tool-zsh/map.jinja' import zsh %}
 
+{%- set zsh = zsh -%} {# enable importing zsh from this file #}
+
 {#- by default, don't install prezto -#}
 {%- for user in zsh.users | selectattr('zsh.prezto') -%}
   {%- set zpreztodir = user.xdg.data ~ '/zprezto' if user.xdg else user.home ~ '/.zprezto' %}
