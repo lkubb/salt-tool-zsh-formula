@@ -3,7 +3,7 @@
 include:
   - .package
 
-{%- for username in zsh.users | selectattr('zsh.default') | map(attribute='name') %}
+{%- for username in zsh.users | selectattr('zsh.default', 'defined') | selectattr('zsh.default') | map(attribute='name') %}
 ZSH is default shell for user '{{ username }}':
   cmd.run: # there's user.present with shell option, but I don't want to create one here in case it does not exist
     - name: | # running this as root because chsh asks for the user's password interactively if he calls it himself

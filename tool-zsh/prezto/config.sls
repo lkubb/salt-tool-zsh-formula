@@ -1,9 +1,9 @@
-{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
+{%- from 'tool-zsh/prezto/map.jinja' import users %}
 
 include:
   - .package
 
-{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) %}
+{%- for user in users %}
 Prezto zdotfiles/runcoms are copied for user '{{ user.name }}' if he has no custom file:
   file.copy:
     - names:

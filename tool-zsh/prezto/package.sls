@@ -1,9 +1,9 @@
-{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
+{%- from 'tool-zsh/prezto/map.jinja' import users %}
 
 include:
   - ..package
 
-{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) %}
+{%- for user in users %}
 Prezto is cloned for user '{{ user.name }}':
   # git.cloned: # does not support --recursive -.-
   cmd.run:

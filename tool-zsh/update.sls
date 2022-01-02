@@ -1,9 +1,16 @@
-{%- from 'tool-zsh/map.jinja' import zsh %}
+{%- from 'tool-zsh/map.jinja' import zsh -%}
 
+{%- set dotconfig = zsh.users | selectattr('dotconfig', 'defined') | selectattr('dotconfig') -%}
+{%- set prezto = zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) -%}
+
+{%- if dotconfig or prezto %}
 include:
+  {%- if dotconfig %}
   - .prezto.update
-{%- if zsh.users | selectattr('dotconfig') %}
+  {%- endif %}
+  {%- if dotconfig %}
   - .configsync
+  {%- endif %}
 {%- endif %}
 
 ZSH is updated to latest package:

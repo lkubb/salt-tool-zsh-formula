@@ -1,9 +1,9 @@
-{%- from 'tool-zsh/prezto/map.jinja' import zsh %}
+{%- from 'tool-zsh/prezto/map.jinja' import users %}
 
 include:
   - .package
 
-{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) | selectattr('zsh.prezto.extplugins', 'defined') %}
+{%- for user in users | selectattr('zsh.prezto.extplugins', 'defined') %}
   {%- if user.zsh.prezto.get('required_packages', False) %}
 Packages required for prezto modules specified for user '{{ user.name }}' are installed:
   pkg.installed:
