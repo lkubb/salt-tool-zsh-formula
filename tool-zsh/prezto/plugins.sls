@@ -3,7 +3,7 @@
 include:
   - .package
 
-{%- for user in zsh.users | selectattr('zsh.prezto') | selectattr('zsh.prezto.extplugins') %}
+{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) | selectattr('zsh.prezto.extplugins', 'defined') %}
   {%- if user.zsh.prezto.get('required_packages', False) %}
 Packages required for prezto modules specified for user '{{ user.name }}' are installed:
   pkg.installed:

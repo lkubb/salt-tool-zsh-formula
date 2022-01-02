@@ -1,6 +1,6 @@
 {%- from 'tool-zsh/map.jinja' import zsh %}
 
-{%- for user in zsh.users | selectattr('dotconfig') %}
+{%- for user in zsh.users | selectattr('dotconfig', 'defined') | selectattr('dotconfig') %}
 zsh configuration is synced to ZDOTDIR for user '{{ user.name }}':
   file.recurse:
     - name: {{ user._zsh.confdir }}

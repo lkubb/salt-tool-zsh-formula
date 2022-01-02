@@ -1,6 +1,6 @@
 {%- from 'tool-zsh/prezto/map.jinja' import zsh %}
 
-{%- for user in zsh.users | selectattr('zsh.prezto') %}
+{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) %}
 Prezto is updated to latest commit for user '{{ user.name }}':
   cmd.run:
     - name: |

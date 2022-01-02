@@ -3,7 +3,7 @@
 include:
   - .package
 
-{%- for user in zsh.users | selectattr('zsh.prezto') %}
+{%- for user in zsh.users | selectattr('zsh.prezto', 'defined') | rejectattr('zsh.prezto', 'sameas', False) %}
 Prezto zdotfiles/runcoms are copied for user '{{ user.name }}' if he has no custom file:
   file.copy:
     - names:
