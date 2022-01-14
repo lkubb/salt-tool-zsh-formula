@@ -102,6 +102,7 @@ to the user's `$ZDOTDIR` for every user that has it enabled (see `user.dotconfig
 
 ## Todo
 * integrate [zinit](https://github.com/zdharma-continuum/zinit)
+* https://chr4.org/posts/2014-09-10-conf-dot-d-like-directories-for-zsh-slash-bash-dotfiles/
 
 ## Reference
 * https://blog.devgenius.io/enhance-your-terminal-with-zsh-and-prezto-ab9abf9bc424
