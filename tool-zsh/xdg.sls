@@ -4,6 +4,23 @@ include:
   - .package
 
 {%- if zsh.users | rejectattr('xdg', 'sameas', False) %}
+Global zshenv exists:
+  file.managed:
+    - names:
+      - /etc/zshenv:
+        - unless:
+          - test -d /etc/zsh
+      - /etc/zsh/zshenv:
+        - onlyif:
+          - test -d /etc/zsh
+    - user: root
+    - group: {{ salt['user.primary_group']('root') }}
+    - mode: '0644'
+    - require:
+      - pkg: zsh
+    - prereq_in:
+      - ZSH setup is completed
+
 ZSH uses XDG_CONFIG_HOME:     # in case /etc/zsh dir does not exist, use /etc/zshenv. cannot do this in jinja because it is evaluated before states are run
   file.blockreplace:          # (including pkg.installed zsh)
     - names:                  # there is a workaround with reactor and event bus https://github.com/saltstack/salt/issues/44778#issuecomment-872077365
