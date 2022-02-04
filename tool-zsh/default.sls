@@ -10,6 +10,6 @@ ZSH is default shell for user '{{ username }}':
         ZSHPATH=$(sudo -u {{ username }} echo $((find /usr/local/bin /opt/homebrew/bin /usr/bin /bin -name zsh 2>/dev/null || which zsh) | head -n 1))
         [ -z "$ZSHPATH" ] && exit 1
         chsh -s "$ZSHPATH" "{{ username }}"
-    - prereq_in:
+    - require_in:
       - ZSH setup is completed
 {%- endfor %}

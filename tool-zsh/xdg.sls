@@ -18,7 +18,7 @@ Global zshenv exists:
     - mode: '0644'
     - require:
       - pkg: zsh
-    - prereq_in:
+    - require_in:
       - ZSH setup is completed
 
 ZSH uses XDG_CONFIG_HOME:     # in case /etc/zsh dir does not exist, use /etc/zshenv. cannot do this in jinja because it is evaluated before states are run
@@ -43,7 +43,7 @@ ZSH uses XDG_CONFIG_HOME:     # in case /etc/zsh dir does not exist, use /etc/zs
     - marker_end:   '# ----- end managed by tool-zsh.xdg -----'
     - require:
       - pkg: zsh
-    - prereq_in:
+    - require_in:
       - ZSH setup is completed
 
   {%- for user in zsh.users | rejectattr('xdg', 'sameas', False) %}
@@ -71,7 +71,7 @@ Existing ZSH configuration is migrated for user '{{ user.name }}':
         - onlyif:
           - test -e {{ user.home }}/.zlogout
     - makedirs: true
-    - prereq_in:
+    - require_in:
       - ZSH setup is completed
 
 ZSH has its own directory in XDG_CONFIG_HOME for user '{{ user.name }}':
@@ -80,7 +80,7 @@ ZSH has its own directory in XDG_CONFIG_HOME for user '{{ user.name }}':
     - user: {{ user.name }}
     - group: {{ user.group }}
     - mode: '0700'
-    - prereq_in:
+    - require_in:
       - ZSH setup is completed
 
     {%- if user.zsh.get('gitignore', False) %}
