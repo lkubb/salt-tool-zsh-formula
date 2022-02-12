@@ -13,6 +13,7 @@ Global zshenv exists:
       - /etc/zsh/zshenv:
         - onlyif:
           - test -d /etc/zsh
+    - replace: false
     - user: root
     - group: {{ salt['user.primary_group']('root') }}
     - mode: '0644'
