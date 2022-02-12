@@ -1,12 +1,18 @@
 tool:
   users:
     user:
-      xdg: true           # set up ZDOTDIR in XDG_CONF_HOME. mind that currently, ZDOTDIR will be set globally,
-                          # excluded users will have broken config. @TODO possible workaround by creating
-                          # the option to only leave .zshenv in $HOME or specifically checking [[ "$(whoami)" == 'user' ]] in /etc/zshenv
-      dotconfig: false    # if you want to sync this user's zsh config from a dotfiles repo available as salt://dotconfig/<user>/zsh or salt://dotconfig/zsh
-      zsh:                # setup zsh config in global tool:users namespace or tool:zsh:users:<name> (latter takes precedence)
-        default: false    # set zsh as default shell for this user. defaults to false
+      # Set up $ZDOTDIR in XDG_CONF_HOME. Mind that currently,
+      # $ZDOTDIR will be set globally. Thus, excluded users will
+      # have broken config.
+      xdg: true
+      # sync this user's config from a dotfiles repo available as
+      # salt://dotconfig/<user>/zsh or salt://dotconfig/zsh
+      dotconfig:              # can be bool or mapping
+        file_mode: '0600'     # default: keep destination or salt umask (new)
+        dir_mode: '0700'      # default: 0700
+        clean: false          # delete files in target. default: false
+      zsh:                    # setup zsh config in global tool:users namespace or tool:zsh:users:<name> (latter takes precedence)
+        default: false        # set zsh as default shell for this user. defaults to false
 
   zsh:
     users:

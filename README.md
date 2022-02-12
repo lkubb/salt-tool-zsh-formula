@@ -46,8 +46,18 @@ tool:
 The following shows an example of `tool-zsh` pillar configuration. Namespace it to `tool:users` and/or `tool:zsh:users`.
 ```yaml
 username:
+  # Set up $ZDOTDIR in XDG_CONF_HOME. Mind that currently,
+  # $ZDOTDIR will be set globally. Thus, excluded users will
+  # have broken config. @TODO possible workaround by creating
+  # the option to only leave .zshenv in $HOME or
+  # specifically checking [[ "$(whoami)" == 'user' ]] in /etc/zshenv
   xdg: true
-  dotconfig: true
+  # sync this user's config from a dotfiles repo available as
+  # salt://dotconfig/<user>/zsh or salt://dotconfig/zsh
+  dotconfig:              # can be bool or mapping
+    file_mode: '0600'     # default: keep destination or salt umask (new)
+    dir_mode: '0700'      # default: 0700
+    clean: false          # delete files in target. default: false
   zsh:
     default: false                      # set zsh as default shell for this user. defaults to false
     gitignore: false                    # add non-config files to gitignore in ZDOTDIR
