@@ -10,7 +10,7 @@ zsh configuration is synced to ZDOTDIR for user '{{ user.name }}':
       - salt://dotconfig/{{ user.name }}/zsh
       - salt://dotconfig/zsh
     - context:
-        user: {{ user }}
+        user: {{ user | json }}
     - template: jinja
     - user: {{ user.name }}
     - group: {{ user.group }}
