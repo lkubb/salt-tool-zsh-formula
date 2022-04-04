@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  lookup:
+    pkg:
+      name: zsh
+    paths:
+      confdir: ''
+      conffile: '.zshrc'
+      xdg_dirname: 'zsh'
+      xdg_conffile: '.zshrc'
+    rootgroup: root
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...

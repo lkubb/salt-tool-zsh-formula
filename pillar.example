@@ -1,41 +1,152 @@
-tool:
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+# yamllint disable rule:comments-indentation
+---
+######################################################################
+# Mind that this is to be read as an overview of available
+# settings which can be set in many different ways, not only
+# by providing pillar values.
+# The different sources will be merged. For further information,
+# please see the docs, `libmapstack.jinja` as well as the configured
+# default sources in `parameters/map_jinja.yaml`.
+#
+# This documentation will need to be updated once there is
+# some learned experience. @TODO
+######################################################################
+
+# Apart from the various source files, there are two independent source trees
+# for user-specific configuration.
+# Generally tool_zsh > tool_global.
+# `tool_global` focuses on specific users, of which most values
+# will be respected by all formulae in the `tool` suite:
+tool_global:
   users:
+
+      # The following is global configuration for the user named `user`.
     user:
-      # Set up $ZDOTDIR in XDG_CONF_HOME. Mind that currently,
-      # $ZDOTDIR will be set globally. Thus, excluded users will
-      # have broken config.
+
+        # Force the usage of XDG directories for this user.
+        # This sets up $ZDOTDIR in XDG_CONF_HOME. Mind that currently,
+        # $ZDOTDIR will be set globally. Thus, excluded users will
+        # have broken config.
       xdg: true
-      # sync this user's config from a dotfiles repo available as
-      # salt://dotconfig/<user>/zsh or salt://dotconfig/zsh
+
+        # Sync this user's config from a dotfiles repo.
+        # The available paths and their priority can be found in the
+        # rendered `config/sync.sls` file (currently, @TODO docs).
+        # Overview in descending priority:
+        # salt://dotconfig/<minion_id>/<user>/zsh
+        # salt://dotconfig/<minion_id>/zsh
+        # salt://dotconfig/<os_family>/<user>/zsh
+        # salt://dotconfig/<os_family>/zsh
+        # salt://dotconfig/default/<user>/zsh
+        # salt://dotconfig/default/zsh
       dotconfig:              # can be bool or mapping
         file_mode: '0600'     # default: keep destination or salt umask (new)
         dir_mode: '0700'      # default: 0700
         clean: false          # delete files in target. default: false
-      zsh:                    # setup zsh config in global tool:users namespace or tool:zsh:users:<name> (latter takes precedence)
-        default: false        # set zsh as default shell for this user. defaults to false
 
-  zsh:
-    users:
-      user:
-        dotconfig: true                       # you can override global tool:users defaults in zsh namespace
-        zsh:
-          gitignore: false                    # add non-config files to gitignore in ZDOTDIR
-          prezto:                             # set up prezto framework (if xdg is true, use XDG_DATA_HOME, else ZDOTDIR). defaults to false.
-                                              # set to true or to mapping to install
-            repo:                             # if you want to override the default repository with your own
-              url: <url>                      # url to repo. if you want to work on main/master, just specify repo: <url>.
-                                              # @TODO with custom module/state: if the repo contains 'required_packages', they will be installed
-              branch: my                      # branch to checkout when cloning
-            required_packages:                # list of packages that are required by the modules specified in ext_plugins that will be automatically installed
-              - fzf
-              - lua
-            extplugins:                       # list of zsh plugins **on github** to clone into <extplugins_target>, by default ZPREZTODIR/contrib
-              - gpanders/fzf-prezto
-              - skywind3000/z.lua
-            extplugins_target: /some/path     # by default, plugins are synced to $ZPREZTODIR/contrib. you can override it here
-            extplugins_sync_on_startup: False # if you want to manually edit zshrc and add plugins on init to test them (will add stuff to zshrc)
-            extplugins_as_submodule: False    # if you want to add the plugins as submodules to prezto instead of cloned repos in <extplugins_target>
-            user_plugin_dirs:                 # list of additional paths prezto searches for plugins besides $ZPREZTODIR/{contrib, modules}
-              - ${XDG_DATA_HOME}/zprezto-contrib
-    defaults:
-      gitignore: false                        # setup default zsh config values for all users in tool:zsh:defaults
+        # Persist environment variables used by this formula for this
+        # user to this file (will be appended to a file relative to $HOME)
+      persistenv: '.config/zsh/zshenv'
+
+        # Add runcom hooks specific to this formula to this file
+        # for this user (will be appended to a file relative to $HOME)
+      rchook: '.config/zsh/zshrc'
+
+        # This user's configuration for this formula. Will be overridden by
+        # user-specific configuration in `tool_zsh:users`.
+        # Set this to `false` to disable configuration for this user.
+      zsh:
+          # Set zsh as default shell for this user. Defaults to false.
+        default_shell: true
+          # Set up Prezto framework (if xdg is true, use XDG_DATA_HOME, else ZDOTDIR).
+          # Defaults to false. Set to true or mapping to install.
+        prezto:
+            # List of zsh plugins **on Github** to clone into <extplugins_target>,
+            # by default $ZPREZTODIR/contrib.
+          extplugins:
+            - gpanders/fzf-prezto
+            - skywind3000/z.lua
+            # If you want to add the extplugins as submodules to prezto instead of
+            # cloned repos in <extplugins_target>.
+          extplugins_as_submodule: false
+            # If you want to manually edit zshrc and add plugins on init to test them
+            # (will add stuff to zshrc).
+          extplugins_sync_on_startup: false
+            # By default, plugins are synced to $ZPREZTODIR/contrib.
+            # You can override it here.
+          extplugins_target: some/other/path
+            # if you want to override the default repository with your own
+          repo:
+              # Git branch to checkout when cloning.
+            branch: master
+              # URL to git repository of Prezto. If you want to work on the
+              # default branch, just specify repo: <url>.
+            url: https://github.com/sorin-ionescu/prezto
+            # List of packages that are required by the modules specified in
+            # ext_plugins (will be automatically installed by the package manager).
+          required_packages:
+            - fzf
+            - lua
+            # List of additional paths Prezto searches for plugins
+            # besides $ZPREZTODIR/{contrib, modules}
+          user_plugin_dirs:
+            - ${XDG_DATA_HOME}/zprezto-contrib
+
+tool_zsh:
+
+    # Specify an explicit version (works on most Linux distributions) or
+    # keep the packages updated to their latest version on subsequent runs
+    # by leaving version empty or setting it to 'latest'
+    # (again for Linux, brew does that anyways).
+  version: latest
+
+    # Default formula configuration for all users.
+  defaults:
+    default_shell: default value for all users
+
+    # User configuration can also be specified here in
+    # `tool_zsh:users`. It will override
+    # configuration sourced from `tool_global:users`.
+  users:
+    user:
+      persistenv: '.bash_profile'
+      zsh:
+        default_shell: this overrides config from tool_globl:users
+
+######################################################################
+# The following settings define default values for this formula,
+# depending on different grains. You should not have to modify them
+# in most cases. For a full overview, see the different files
+# in `parameters`.
+######################################################################
+  lookup:
+    pkg:
+      name: zsh
+    rootgroup: root
+    paths:
+      confdir: ''
+      conffile: '.zshrc'
+      xdg_dirname: 'zsh'
+      xdg_conffile: '.zshrc'
+
+######################################################################
+# This is where `tool` suite settings end and Salt behavior settings
+# inherited from `salt-formulas/template-formula` start. They will
+# influence how exactly the TOFS pattern is applied. Mind that
+# parts of this are disabled for `configsync.sls`.
+######################################################################
+  tofs:
+    # The files_switch key serves as a selector for alternative
+    # directories under the formula files directory. See TOFS pattern
+    # doc for more info.
+    # Note: Any value not evaluated by `config.get` will be used literally.
+    # This can be used to set custom paths, as many levels deep as required.
+    files_switch:
+      - any/path/can/be/used/here
+      - id
+      - roles
+      - osfinger
+      - os
+      - os_family

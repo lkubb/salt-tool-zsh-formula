@@ -1,0 +1,68 @@
+{
+  "template": "https://github.com/lkubb/salt-tool-template-formula",
+  "commit": "4d98f778ad7888795ca9fbdd054a6c1670917011",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "_extensions": [
+        "local_extensions.YAMLDumper"
+      ],
+      "_jinja2_env_vars": {
+        "block_start_string": "{!",
+        "block_end_string": "!}",
+        "variable_start_string": "{=",
+        "variable_end_string": "=}",
+        "comment_start_string": "{@",
+        "comment_end_string": "@}"
+      },
+      "name": "Zsh",
+      "abbr": "zsh",
+      "abbr_pysafe": "zsh",
+      "pkg": "zsh",
+      "modstate": "n",
+      "needs_repo": "n",
+      "has_service": "n",
+      "mac_library": "n",
+      "mac_cask": "n",
+      "has_xdg": "y",
+      "needs_xdg_help": "y",
+      "has_conffile_only": "y",
+      "default_confdir": "",
+      "default_confdir_mac": "",
+      "default_conffile": ".zshrc",
+      "xdg_dirname": "zsh",
+      "xdg_conffile": ".zshrc",
+      "has_configsync": "y",
+      "has_config_template": "n",
+      "has_tests": "y",
+      "git_username": "lkubb",
+      "_lookup": {},
+      "_settings": {},
+      "_usersettings": {
+        "default_shell": true,
+        "prezto": {
+          "repo": {
+            "url": "https://github.com/sorin-ionescu/prezto",
+            "branch": "master"
+          },
+          "required_packages": [
+            "fzf",
+            "lua"
+          ],
+          "extplugins": [
+            "gpanders/fzf-prezto",
+            "skywind3000/z.lua"
+          ],
+          "extplugins_target": "some/other/path",
+          "extplugins_sync_on_startup": false,
+          "extplugins_as_submodule": false,
+          "user_plugin_dirs": [
+            "${XDG_DATA_HOME}/zprezto-contrib"
+          ]
+        }
+      },
+      "_template": "https://github.com/lkubb/salt-tool-template-formula"
+    }
+  },
+  "directory": null
+}
