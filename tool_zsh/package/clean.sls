@@ -9,6 +9,7 @@
 include:
   - {{ sls_config_clean }}
 
+
 # this is a bad idea since this is not idempotent:
 # eg on MacOS, there would be two zsh binaries
 # this would need knowledge about where on the system zsh
