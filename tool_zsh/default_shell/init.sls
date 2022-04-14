@@ -17,9 +17,16 @@ Zsh is default shell for user '{{ user.name }}':
         ZSHPATH=$(sudo -u {{ user.name }} echo $((find /usr/local/bin /opt/homebrew/bin /usr/bin /bin -name zsh 2>/dev/null || which zsh) | head -n 1))
         [ -z "$ZSHPATH" ] && exit 1
         chsh -s "$ZSHPATH" "{{ user.name }}"
+{%-   if grains.kernel in ['Darwin', 'FreeBSD', 'Linux', 'OpenBSD', 'Solaris'] %}
     - unless:
-      - test "$(sudo -u {{ user.name }} echo $SHELL)" -eq \
-        "$(sudo -u {{ user.name }} echo $((find /usr/local/bin /opt/homebrew/bin /usr/bin /bin -name zsh 2>/dev/null || which zsh) | head -n 1))"
+      - >
+{%-     if 'Darwin' == grains.kernel %}
+          test "$(dscl localhost -read /Local/Default/Users/{{ user.name }} UserShell | sed 's/UserShell: //')" =
+{%-     elif grains.kernel in ['Linux', 'FreeBSD', 'OpenBSD', 'Solaris'] %}
+          test "$(getent passwd {{ user.name }} | awk -F : '{print $NF}')" =
+{%-     endif %}
+          "$(sudo -u {{ user.name }} echo $((find /usr/local/bin /opt/homebrew/bin /usr/bin /bin -name zsh 2>/dev/null || which zsh) | head -n 1))"
+{%-   endif %}
     - require_in:
       - Zsh setup is completed
 {%- endfor %}
