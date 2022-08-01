@@ -10,13 +10,14 @@ include:
 {%- for user in users %}
 
 Prezto is cloned for user '{{ user.name }}':
-  # git.cloned: # does not support --recursive -.-
-  cmd.run:
-    - name: |
-        git clone --recursive {% if user._zprezto.branch %}--branch {{ user._zprezto.branch }} {% endif %}{{ user._zprezto.repo }} {{ user._zprezto.datadir }}
-    - runas: {{ user.name }}
-    - unless:
-      - test -s {{ user._zprezto.datadir }}/init.zsh
+  git.latest:
+    - name: {{ user._zprezto.repo }}
+    - target: {{ user._zprezto.datadir }}
+    - rev: {{ user._zprezto.rev or "null" }}
+    - submodules: true
+    - force_fetch: true
+    - force_reset: remote-changes
+    - user: {{ user.name }}
     - require:
       - Zsh setup is completed
 {%- endfor %}

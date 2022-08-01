@@ -84,8 +84,10 @@ The following shows an example of ``tool_zsh`` per-user configuration. If provid
         extplugins_target: some/other/path
           # if you want to override the default repository with your own
         repo:
-            # Git branch to checkout when cloning.
-          branch: master
+            # Git rev to checkout after cloning.
+            # If you do not want to update in subsequent runs, pin this
+            # to a specific commit hash.
+          rev: master
             # URL to git repository of Prezto. If you want to work on the
             # default branch, just specify repo: <url>.
           url: https://github.com/sorin-ionescu/prezto

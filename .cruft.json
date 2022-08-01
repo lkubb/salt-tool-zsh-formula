@@ -44,7 +44,7 @@
         "prezto": {
           "repo": {
             "url": "https://github.com/sorin-ionescu/prezto",
-            "branch": "master"
+            "rev": "master"
           },
           "required_packages": [
             "fzf",

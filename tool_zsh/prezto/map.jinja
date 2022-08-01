@@ -9,19 +9,19 @@
 
 {%- for user in users -%}
   {%- set zpreztodir = user.xdg.data ~ '/zprezto' if user.xdg else user.home ~ '/.zprezto' -%}
-  {%- set prezto_branch = '' -%}
+  {%- set prezto_rev = '' -%}
   {%- set prezto_repo = 'https://github.com/sorin-ionescu/prezto.git' -%}
   {%- if user.zsh.prezto.get('repo') is string -%}
     {%- set prezto_repo = user.zsh.prezto.repo -%}
-    {%- set prezto_branch = '' -%}
+    {%- set prezto_rev = '' -%}
   {%- elif user.zsh.prezto.get('repo') is mapping -%}
     {%- set prezto_repo = user.zsh.prezto.repo.get('url', prezto_repo) -%}
-    {%- set prezto_branch = user.zsh.prezto.repo.get('branch', '') -%}
+    {%- set prezto_rev = user.zsh.prezto.repo.get('rev', '') -%}
   {%- endif -%}
   {%- do user.update({'_zprezto': {
       'datadir': zpreztodir,
       'repo': prezto_repo,
-      'branch': prezto_branch,
+      'rev': prezto_rev,
       'extplugins_target': user.zsh.prezto.extplugins_target | default(zpreztodir ~ '/contrib')}
   }) -%}
 {%- endfor -%}

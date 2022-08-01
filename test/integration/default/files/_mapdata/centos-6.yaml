@@ -19,7 +19,7 @@ values:
           extplugins_sync_on_startup: false
           extplugins_target: some/other/path
           repo:
-            branch: master
+            rev: master
             url: https://github.com/sorin-ionescu/prezto
           required_packages:
             - fzf
