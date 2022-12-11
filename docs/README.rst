@@ -235,5 +235,5 @@ Todo
 Reference
 ---------
 * https://blog.devgenius.io/enhance-your-terminal-with-zsh-and-prezto-ab9abf9bc424
-* https://redd.jean.casa/r/zsh/comments/ak0vgi/a_comparison_of_all_the_zsh_plugin_mangers_i_used/
+* https://www.reddit.com/r/zsh/comments/ak0vgi/a_comparison_of_all_the_zsh_plugin_mangers_i_used/
 * https://github.com/unixorn/awesome-zsh-plugins
