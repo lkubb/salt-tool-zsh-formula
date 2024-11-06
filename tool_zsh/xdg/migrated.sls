@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as zsh with context %}
 
 include:
@@ -9,7 +8,7 @@ include:
 
 
 {#- @FIXME if a user does not have xdg set, this will error #}
-{%- if zsh.users | rejectattr('xdg', 'sameas', false) %}
+{%- if zsh.users | rejectattr("xdg", "sameas", false) %}
 
 Global zshenv exists:
   file.managed:
@@ -54,9 +53,9 @@ Zsh uses XDG_CONFIG_HOME:     # in case /etc/zsh dir does not exist, use /etc/zs
     - require_in:
       - Zsh setup is completed
 
-{%-   for user in zsh.users | rejectattr('xdg', 'sameas', False) %}
+{%-   for user in zsh.users | rejectattr("xdg", "sameas", False) %}
 {%-     set user_xdg_confdir = user.xdg.config | path_join(zsh.lookup.paths.xdg_dirname) %}
-{%-     set config_files = ['.zshrc', '.zshenv', '.zprofile', '.zlogin', '.zlogout'] %}
+{%-     set config_files = [".zshrc", ".zshenv", ".zprofile", ".zlogin", ".zlogout"] %}
 
 Zsh has its config dir in XDG_CONFIG_HOME for user '{{ user.name }}':
   file.directory:

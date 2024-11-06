@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as zsh with context %}
 
 
 Zsh is installed:
   pkg.installed:
     - name: {{ zsh.lookup.pkg.name }}
-    - version: {{ zsh.get('version') or 'latest' }}
+    - version: {{ zsh.get("version") or "latest" }}
     {#- do not specify alternative return value to be able to unset default version #}
 
 Zsh is registered in /etc/shells: # chsh does not allow a user (besides root) to change to non-standard shells

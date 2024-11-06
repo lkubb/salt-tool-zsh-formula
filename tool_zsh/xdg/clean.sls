@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as zsh with context %}
 
 
 {#- @FIXME if a user does not have xdg set, this will error #}
-{%- if zsh.users | rejectattr('xdg', 'sameas', false) %}
+{%- if zsh.users | rejectattr("xdg", "sameas", false) %}
 
 Zsh is ignorant about XDG_CONFIG_HOME:
   file.blockreplace:
@@ -21,9 +20,9 @@ Zsh is ignorant about XDG_CONFIG_HOME:
     - marker_start: '# ----- managed by salt tool_zsh.xdg -----'
     - marker_end:   '# ----- end managed by tool_zsh.xdg -----'
 
-{%-   for user in zsh.users | rejectattr('xdg', 'sameas', False) %}
+{%-   for user in zsh.users | rejectattr("xdg", "sameas", False) %}
 {%-     set user_xdg_confdir = user.xdg.config | path_join(zsh.lookup.paths.xdg_dirname) %}
-{%-     set config_files = ['.zshrc', '.zshenv', '.zprofile', '.zlogin', '.zlogout', '.zpreztorc'] %}
+{%-     set config_files = [".zshrc", ".zshenv", ".zprofile", ".zlogin", ".zlogout", ".zpreztorc"] %}
 
 Zsh configuration is cluttering $HOME for user '{{ user.name }}':
   file.rename:

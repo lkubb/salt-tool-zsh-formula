@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # vim: ft=yaml
+# yamllint disable rule:comments-indentation
 ---
 tool_global:
   users:
@@ -40,6 +40,7 @@ tool_zsh:
       conffile: '.zshrc'
       xdg_dirname: 'zsh'
       xdg_conffile: '.zshrc'
+    rootgroup: root
 
   tofs:
     # The files_switch key serves as a selector for alternative
