@@ -1,5 +1,5 @@
-Welcome to salt-tool-zsh-formula's documentation!
-=================================================
+Welcome to tool-zsh-formula's documentation!
+============================================
 
 .. toctree::
    :maxdepth: 2
